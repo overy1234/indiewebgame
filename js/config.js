@@ -52,4 +52,34 @@ async function uploadImage(file) {
     alert(`이미지 업로드에 실패했습니다: ${error.message}`);
     return null;
   }
+}
+
+// 인증 관련 함수
+async function checkAdminPassword(password) {
+  try {
+    // 비밀번호 확인을 위한 Supabase 쿼리
+    const { data, error } = await supabaseClient
+      .from('admin_settings')
+      .select('password')
+      .single();
+    
+    if (error) throw error;
+    
+    // 저장된 비밀번호가 없는 경우 초기 설정
+    if (!data) {
+      // 기본 비밀번호 설정 (최초 실행 시)
+      await supabaseClient
+        .from('admin_settings')
+        .insert([{ password: '인디코드', id: 1 }]);
+      
+      return password === '인디코드';
+    }
+    
+    // 저장된 비밀번호와 비교
+    return data.password === password;
+  } catch (error) {
+    console.error('비밀번호 확인 오류:', error);
+    // 에러 발생 시 기본 비밀번호로 폴백
+    return password === '인디코드';
+  }
 } 

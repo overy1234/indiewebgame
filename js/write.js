@@ -13,31 +13,36 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('인증 폼:', authForm);
   console.log('글쓰기 폼 컨테이너:', writeFormContainer);
   
-  // 관리자 비밀번호
-  const ADMIN_PASSWORD = '108010';
-  
   // 인증 폼 제출 처리
-  authForm.addEventListener('submit', (e) => {
+  authForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     console.log('인증 폼 제출됨');
     
     const password = document.getElementById('auth-password').value;
     console.log('입력된 비밀번호:', password);
     
-    if (password === ADMIN_PASSWORD) {
-      // 인증 성공
-      console.log('비밀번호 일치, 글쓰기 폼 표시');
-      authFormContainer.style.display = 'none';
-      writeFormContainer.style.display = 'block';
+    try {
+      // Supabase에서 비밀번호 확인
+      const isAuthenticated = await checkAdminPassword(password);
       
-      // 마크다운 에디터 초기화
-      initEditor();
-    } else {
-      // 인증 실패
-      console.log('비밀번호 불일치');
-      alert('비밀번호가 일치하지 않습니다.');
-      document.getElementById('auth-password').value = '';
-      document.getElementById('auth-password').focus();
+      if (isAuthenticated) {
+        // 인증 성공
+        console.log('비밀번호 일치, 글쓰기 폼 표시');
+        authFormContainer.style.display = 'none';
+        writeFormContainer.style.display = 'block';
+        
+        // 마크다운 에디터 초기화
+        initEditor();
+      } else {
+        // 인증 실패
+        console.log('비밀번호 불일치');
+        alert('비밀번호가 일치하지 않습니다.');
+        document.getElementById('auth-password').value = '';
+        document.getElementById('auth-password').focus();
+      }
+    } catch (error) {
+      console.error('인증 오류:', error);
+      alert('인증 중 오류가 발생했습니다. 다시 시도해주세요.');
     }
   });
   
