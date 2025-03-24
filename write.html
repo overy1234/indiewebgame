@@ -12,6 +12,18 @@
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="js/config.js"></script>
+  <style>
+    .editor-area {
+      min-height: 400px; /* 에디터 영역 높이 증가 */
+    }
+    .EasyMDEContainer {
+      min-height: 400px;
+    }
+    .CodeMirror {
+      min-height: 400px !important;
+      height: auto !important;
+    }
+  </style>
 </head>
 <body>
   <!-- 헤더 -->
@@ -51,15 +63,11 @@
           </div>
           <div class="form-group">
             <label for="content">내용</label>
-            <textarea id="content" name="content" required></textarea>
+            <textarea id="content" name="content" class="editor-area" required></textarea>
           </div>
           <div class="form-group">
             <label for="description">간단한 설명 (선택사항)</label>
             <textarea id="description" name="description" rows="3" placeholder="글의 간단한 설명을 입력하세요. 입력하지 않으면 내용의 일부가 사용됩니다."></textarea>
-          </div>
-          <div class="form-group">
-            <label for="cover-image">커버 이미지 URL (선택사항)</label>
-            <input type="url" id="cover-image" name="cover_image" placeholder="https://example.com/image.jpg">
           </div>
           <button type="submit" id="submit-btn" class="btn btn-primary">게시하기</button>
         </form>

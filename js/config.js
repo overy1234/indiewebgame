@@ -1,9 +1,23 @@
-// Supabase 설정
-const SUPABASE_URL = 'https://amejjiiaihsaqcivtnaa.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFtZWpqaWlhaWhzYXFjaXZ0bmFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA1NTg2OTUsImV4cCI6MjA1NjEzNDY5NX0.GluCTZYpEhp99tuF7yuhmQv_-XVZ8C5X21DcWH0K0SU';
+// Supabase 클라이언트 설정
+const SUPABASE_URL = 'https://your-supabase-url.supabase.co';
+const SUPABASE_KEY = 'your-supabase-key';
 
-// Supabase 클라이언트 초기화
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Supabase 클라이언트가 로드되었는지 확인하고 생성
+let supabaseClient;
+
+try {
+  if (typeof supabase !== 'undefined') {
+    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    console.log('Supabase 클라이언트가 성공적으로 초기화되었습니다.');
+  } else {
+    console.warn('Supabase JS SDK가 로드되지 않았습니다. 로컬 스토리지 모드로 운영됩니다.');
+    // 로컬 스토리지 모드에서는 supabaseClient를 null로 설정
+    supabaseClient = null;
+  }
+} catch (error) {
+  console.error('Supabase 클라이언트 초기화 중 오류:', error);
+  supabaseClient = null;
+}
 
 // 유틸리티 함수
 function formatDate(dateString) {

@@ -58,6 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // 에디터 요소 다시 확인
     const contentAreaCheck = document.getElementById('content');
     console.log('컨텐츠 영역 재확인:', contentAreaCheck);
+    console.log('컨텐츠 영역 클래스:', contentAreaCheck ? contentAreaCheck.className : '없음');
+    console.log('컨텐츠 영역 표시 상태:', contentAreaCheck ? window.getComputedStyle(contentAreaCheck).display : '없음');
     
     if (!contentAreaCheck) {
       console.error('content 요소를 찾을 수 없습니다.');
@@ -66,6 +68,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     try {
+      console.log('EasyMDE 객체 생성 시도...');
+      // ID가 'content'인 요소의 부모 컨테이너 확인
+      console.log('컨텐츠 영역 부모:', contentAreaCheck.parentElement);
+      
       const easyMDE = new EasyMDE({
         element: contentAreaCheck,
         spellChecker: false,
@@ -92,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       
       console.log('에디터 초기화 완료:', easyMDE);
+      console.log('에디터 DOM 확인:', document.querySelector('.EasyMDEContainer'));
       
       // 숨겨진 파일 업로드 입력 생성
       const fileInput = document.createElement('input');
@@ -179,7 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const title = titleInput.value.trim();
         const content = easyMDE.value().trim();
         const description = descriptionArea.value.trim() || content.substring(0, 200).replace(/[#*`]/g, '');
-        const coverImage = document.getElementById('cover-image').value.trim();
         
         // 유효성 검사
         if (!title) {
@@ -199,6 +205,29 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.textContent = '저장 중...';
         
         try {
+          // Supabase 클라이언트가 존재하는지 확인
+          if (typeof supabaseClient === 'undefined' || !supabaseClient) {
+            console.error('Supabase 클라이언트가 정의되지 않았습니다.');
+            
+            // 로컬 스토리지에 임시 저장 (Supabase가 없는 경우)
+            const posts = JSON.parse(localStorage.getItem('blog_posts') || '[]');
+            const newPost = {
+              id: Date.now(),
+              title,
+              content,
+              description,
+              created_at: new Date().toISOString(),
+              published: true
+            };
+            
+            posts.push(newPost);
+            localStorage.setItem('blog_posts', JSON.stringify(posts));
+            
+            alert('글이 로컬 스토리지에 임시 저장되었습니다.');
+            window.location.href = 'index.html';
+            return;
+          }
+          
           // Supabase에 데이터 저장
           const { data, error } = await supabaseClient
             .from('posts')
@@ -207,7 +236,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 title,
                 content,
                 description,
-                cover_image: coverImage || null,
                 created_at: new Date().toISOString(),
                 published: true
               }
