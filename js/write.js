@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
               ch: uploadingTextPosition + '![이미지 업로드 중...](uploading)'.length
             };
             
-            const markdownImage = `![${file.name}](${imageUrl})`;
+            const markdownImage = `![${file.name.replace(/\s+/g, '_')}](${imageUrl})`;
             cm.replaceRange(markdownImage, from, to);
           }
         } else {

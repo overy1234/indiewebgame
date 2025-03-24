@@ -24,8 +24,9 @@ function showError(message) {
 // 이미지 업로드 함수
 async function uploadImage(file) {
   try {
-    // 파일 이름 생성 (중복 방지를 위해 타임스탬프 추가)
-    const filename = `${Date.now()}_${file.name}`;
+    // 파일 이름에서 공백 제거 및 안전한 파일명 생성
+    const originalName = file.name.replace(/\s+/g, '_');
+    const filename = `${Date.now()}_${originalName}`;
     const filePath = `images/${filename}`;
     
     // 스토리지에 파일 업로드
