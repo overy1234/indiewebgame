@@ -12,7 +12,7 @@
   <header class="header">
     <div class="container">
       <nav class="navbar">
-        <a href="index.html" class="logo">인디코드</a>
+        <a href="index.html" class="logo">인디코드<span>.</span></a>
         <ul class="nav-links">
           <li><a href="index.html" class="nav-link">홈</a></li>
           <li><a href="write.html" class="nav-link active">글쓰기</a></li>
@@ -24,8 +24,22 @@
   <main class="main">
     <section class="write-section">
       <div class="container">
-        <h1 class="section-title">새 글 작성</h1>
-        <form id="post-form" class="write-form">
+        <!-- 비밀번호 인증 폼 -->
+        <div id="auth-form-container" class="auth-form-container">
+          <form id="auth-form" class="auth-form">
+            <div class="form-group">
+              <h2>관리자 인증</h2>
+              <p>글을 작성하려면 비밀번호를 입력하세요</p>
+              <input type="password" id="auth-password" name="password" placeholder="비밀번호를 입력하세요" required>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">확인</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- 글쓰기 폼 (비밀번호 인증 후 표시) -->
+        <form id="post-form" class="write-form" style="display: none;">
           <div class="form-group">
             <label for="title">제목</label>
             <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required>
