@@ -67,6 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     
+    // textarea에서 name 속성 임시 제거 (에디터 초기화 전에)
+    const originalName = contentAreaCheck.getAttribute('name');
+    contentAreaCheck.removeAttribute('name');
+    
     // 포커스 제거 (에디터 초기화 전에)
     contentAreaCheck.blur();
     
@@ -102,6 +106,17 @@ document.addEventListener('DOMContentLoaded', () => {
       
       console.log('에디터 초기화 완료:', easyMDE);
       console.log('에디터 DOM 확인:', document.querySelector('.EasyMDEContainer'));
+      
+      // name 속성 복원 (필요한 경우)
+      if (originalName) {
+        setTimeout(() => {
+          const editorTextarea = document.querySelector('.EasyMDEContainer textarea');
+          if (editorTextarea) {
+            editorTextarea.setAttribute('name', originalName);
+            console.log('name 속성이 복원되었습니다:', originalName);
+          }
+        }, 100);
+      }
       
       // 숨겨진 파일 업로드 입력 생성
       const fileInput = document.createElement('input');
