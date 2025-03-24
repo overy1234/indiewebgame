@@ -34,10 +34,10 @@ document.addEventListener('DOMContentLoaded', () => {
         authFormContainer.style.display = 'none';
         writeFormContainer.style.display = 'block';
         
-        // 약간의 지연 후 에디터 초기화 (DOM 업데이트 확인)
+        // 지연 시간 증가 (100ms → 500ms)
         setTimeout(() => {
           initEditor();
-        }, 100);
+        }, 500);
       } else {
         // 인증 실패
         console.log('비밀번호 불일치');
@@ -66,6 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('에디터 요소를 찾을 수 없습니다. 페이지를 새로고침하세요.');
       return;
     }
+    
+    // 포커스 제거 (에디터 초기화 전에)
+    contentAreaCheck.blur();
     
     try {
       console.log('EasyMDE 객체 생성 시도...');
