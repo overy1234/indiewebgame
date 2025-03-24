@@ -19,4 +19,34 @@ function formatDate(dateString) {
 function showError(message) {
   console.error(message);
   alert(`오류가 발생했습니다: ${message}`);
+}
+
+// 이미지 업로드 함수
+async function uploadImage(file) {
+  try {
+    // 파일 이름 생성 (중복 방지를 위해 타임스탬프 추가)
+    const filename = `${Date.now()}_${file.name}`;
+    const filePath = `images/${filename}`;
+    
+    // 스토리지에 파일 업로드
+    const { data, error } = await supabaseClient.storage
+      .from('blog-images')
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
+    
+    if (error) throw error;
+    
+    // 공개 URL 가져오기
+    const { data: publicUrlData } = supabaseClient.storage
+      .from('blog-images')
+      .getPublicUrl(filePath);
+    
+    return publicUrlData.publicUrl;
+  } catch (error) {
+    console.error('이미지 업로드 오류:', error);
+    showError(`이미지 업로드에 실패했습니다: ${error.message}`);
+    return null;
+  }
 } 

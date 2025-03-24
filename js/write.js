@@ -18,10 +18,91 @@ document.addEventListener('DOMContentLoaded', () => {
     toolbar: [
       'bold', 'italic', 'heading', '|',
       'quote', 'code', 'unordered-list', 'ordered-list', '|',
-      'link', 'image', '|',
+      'link', {
+        name: 'image',
+        action: () => {
+          handleImageUpload();
+        },
+        className: 'fa fa-image',
+        title: '이미지 업로드',
+      }, '|',
       'preview', 'side-by-side', 'fullscreen', '|',
       'guide'
     ]
+  });
+  
+  // 숨겨진 파일 업로드 입력 생성
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'image/*';
+  fileInput.style.display = 'none';
+  document.body.appendChild(fileInput);
+  
+  // 이미지 업로드 처리 함수
+  async function handleImageUpload() {
+    fileInput.click();
+  }
+  
+  // 파일 선택 시 이벤트
+  fileInput.addEventListener('change', async (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      
+      // 로딩 메시지
+      const cm = easyMDE.codemirror;
+      const cursor = cm.getCursor();
+      const loadingText = '![이미지 업로드 중...](uploading)';
+      cm.replaceRange(loadingText, cursor);
+      
+      try {
+        // 이미지 업로드 함수 호출
+        const imageUrl = await uploadImage(file);
+        
+        if (imageUrl) {
+          // 업로드된 이미지로 텍스트 교체
+          const cursorPosition = cm.getCursor();
+          const currentLine = cm.getLine(cursorPosition.line);
+          const uploadingTextPosition = currentLine.indexOf('![이미지 업로드 중...](uploading)');
+          
+          if (uploadingTextPosition !== -1) {
+            const from = {
+              line: cursorPosition.line,
+              ch: uploadingTextPosition
+            };
+            const to = {
+              line: cursorPosition.line,
+              ch: uploadingTextPosition + '![이미지 업로드 중...](uploading)'.length
+            };
+            
+            const markdownImage = `![${file.name}](${imageUrl})`;
+            cm.replaceRange(markdownImage, from, to);
+          }
+        } else {
+          // 업로드 실패 시 로딩 텍스트 제거
+          const cursorPosition = cm.getCursor();
+          const currentLine = cm.getLine(cursorPosition.line);
+          const uploadingTextPosition = currentLine.indexOf('![이미지 업로드 중...](uploading)');
+          
+          if (uploadingTextPosition !== -1) {
+            const from = {
+              line: cursorPosition.line,
+              ch: uploadingTextPosition
+            };
+            const to = {
+              line: cursorPosition.line,
+              ch: uploadingTextPosition + '![이미지 업로드 중...](uploading)'.length
+            };
+            
+            cm.replaceRange('', from, to);
+          }
+        }
+      } catch (error) {
+        showError(error.message);
+      }
+      
+      // 파일 입력 초기화
+      fileInput.value = '';
+    }
   });
 
   // 폼 제출 처리
