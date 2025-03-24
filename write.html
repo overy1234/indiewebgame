@@ -39,27 +39,29 @@
         </div>
 
         <!-- 글쓰기 폼 (비밀번호 인증 후 표시) -->
-        <form id="post-form" class="write-form" style="display: none;">
-          <div class="form-group">
-            <label for="title">제목</label>
-            <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required>
-          </div>
-          <div class="form-group">
-            <label for="content">내용</label>
-            <textarea id="content" name="content"></textarea>
-          </div>
-          <div class="form-group">
-            <label for="description">요약 (선택사항)</label>
-            <textarea id="description" name="description" placeholder="글에 대한 간략한 설명을 입력하세요"></textarea>
-          </div>
-          <div class="form-group">
-            <label for="cover-image">커버 이미지 URL (선택사항)</label>
-            <input type="url" id="cover-image" name="cover_image" placeholder="이미지 URL을 입력하세요">
-          </div>
-          <div class="form-actions">
-            <button type="submit" id="submit-btn" class="btn btn-primary">게시하기</button>
-          </div>
-        </form>
+        <div id="write-form-container" style="display: none;">
+          <form id="post-form" class="write-form">
+            <div class="form-group">
+              <label for="title">제목</label>
+              <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required>
+            </div>
+            <div class="form-group">
+              <label for="content">내용</label>
+              <textarea id="content" name="content"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="description">요약 (선택사항)</label>
+              <textarea id="description" name="description" placeholder="글에 대한 간략한 설명을 입력하세요"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="cover-image">커버 이미지 URL (선택사항)</label>
+              <input type="url" id="cover-image" name="cover_image" placeholder="이미지 URL을 입력하세요">
+            </div>
+            <div class="form-actions">
+              <button type="submit" id="submit-btn" class="btn btn-primary">게시하기</button>
+            </div>
+          </form>
+        </div>
       </div>
     </section>
   </main>
