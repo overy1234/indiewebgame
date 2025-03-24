@@ -1,150 +1,65 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>인디 게임 블로그</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>인디코드 블로그</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <h1>IndieGameHub</h1>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#home">홈</a></li>
-                <li><a href="#games">게임</a></li>
-                <li><a href="#blog">블로그</a></li>
-                <li><a href="#about">소개</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="index.html" class="logo">인디코드</a>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link active">홈</a></li>
+          <li><a href="write.html" class="nav-link">글쓰기</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="banner" style="background-image: url('img/main.png');">
+    <div class="banner-content">
+      <h1 class="banner-title">My Little Forest</h1>
+      <div class="banner-grid">
+        <div class="banner-cell">나</div>
+        <div class="banner-cell">의</div>
+        <div class="banner-cell">리</div>
+        <div class="banner-cell">틀</div>
+        <div class="banner-cell">코</div>
+        <div class="banner-cell">딩</div>
+      </div>
+    </div>
+  </section>
+
+  <main class="main">
+    <section class="posts-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">최신 글</h2>
         </div>
-    </nav>
-
-    <header class="hero">
-        <div class="hero-content">
-            <h1>독특한 인디 게임의 세계</h1>
-            <p>창의적인 게임 개발자들의 이야기와 게임을 만나보세요</p>
-            <a href="#games" class="cta-button">게임 보기</a>
+        
+        <div id="posts-grid" class="posts-grid">
+          <!-- 게시물이 여기에 동적으로 로드됩니다 -->
+          <div class="loading-spinner">
+            <i class="ri-loader-4-line"></i>
+            <span>글 목록을 불러오는 중...</span>
+          </div>
         </div>
-    </header>
-
-    <section id="games" class="games-section">
-        <h2>최신 게임</h2>
-        <div class="games-grid">
-            <div class="game-card">
-                <div class="game-image">
-                    <img src="images/game1.jpg" alt="게임 이미지 1">
-                    <div class="game-overlay">
-                        <span class="game-genre">액션</span>
-                        <span class="game-rating">4.8</span>
-                    </div>
-                </div>
-                <div class="game-info">
-                    <h3>1945</h3>
-                    <p>게임 설명이 들어갈 자리입니다. 짧고 매력적인 설명을 작성하세요.</p>
-                    <div class="game-meta">
-                        <span><i class="fas fa-user"></i> 1.2K</span>
-                        <span><i class="fas fa-star"></i> 4.8</span>
-                    </div>
-                    <a href="Build1945/index.html" class="play-button">플레이하기</a>
-                </div>
-            </div>
-
-            <div class="game-card">
-                <div class="game-image">
-                    <img src="images/game2.jpg" alt="게임 이미지 2">
-                    <div class="game-overlay">
-                        <span class="game-genre">퍼즐</span>
-                        <span class="game-rating">4.5</span>
-                    </div>
-                </div>
-                <div class="game-info">
-                    <h3>게임 제목 2</h3>
-                    <p>두 번째 게임의 설명입니다. 게임의 특징을 간단히 소개합니다.</p>
-                    <div class="game-meta">
-                        <span><i class="fas fa-user"></i> 856</span>
-                        <span><i class="fas fa-star"></i> 4.5</span>
-                    </div>
-                    <a href="game.html" class="play-button">플레이하기</a>
-                </div>
-            </div>
-
-            <div class="game-card">
-                <div class="game-image">
-                    <img src="images/game3.jpg" alt="게임 이미지 3">
-                    <div class="game-overlay">
-                        <span class="game-genre">어드벤처</span>
-                        <span class="game-rating">4.9</span>
-                    </div>
-                </div>
-                <div class="game-info">
-                    <h3>게임 제목 3</h3>
-                    <p>세 번째 게임의 설명입니다. 게임의 주요 특징을 소개합니다.</p>
-                    <div class="game-meta">
-                        <span><i class="fas fa-user"></i> 2.1K</span>
-                        <span><i class="fas fa-star"></i> 4.9</span>
-                    </div>
-                    <a href="game.html" class="play-button">플레이하기</a>
-                </div>
-            </div>
-        </div>
+      </div>
     </section>
+  </main>
 
-    <section id="blog" class="blog-section">
-        <h2>최신 블로그</h2>
-        <div class="blog-grid">
-            <article class="blog-card">
-                <div class="blog-image">
-                    <img src="images/blog-placeholder.jpg" alt="블로그 이미지">
-                </div>
-                <div class="blog-content">
-                    <h3>게임 개발 이야기</h3>
-                    <p>게임 개발 과정과 인사이트를 공유합니다.</p>
-                    <a href="#" class="read-more">더 읽기</a>
-                </div>
-            </article>
-            <!-- 추가 블로그 카드들 -->
-        </div>
-    </section>
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; <script>document.write(new Date().getFullYear())</script> 인디코드. All rights reserved.</p>
+    </div>
+  </footer>
 
-    <section id="about" class="about-section">
-        <h2>소개</h2>
-        <div class="about-content">
-            <p>우리는 독립 게임 개발자들의 창의적인 작품을 소개하고, 게임 개발 과정을 공유하는 플랫폼입니다.</p>
-        </div>
-    </section>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>IndieGameHub</h3>
-                <p>인디 게임의 새로운 시작</p>
-            </div>
-            <div class="footer-section">
-                <h3>연락처</h3>
-                <p>Email: contact@indiegamehub.com</p>
-            </div>
-            <div class="footer-section">
-                <h3>소셜 미디어</h3>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 IndieGameHub. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/index.js"></script>
 </body>
 </html> 
