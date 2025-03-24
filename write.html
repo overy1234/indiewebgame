@@ -3,78 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>글쓰기 - 인디코드 블로그</title>
+  <title>글쓰기 - 블로그</title>
+  <!-- 스타일시트 -->
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.css">
+  <!-- EasyMDE -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="js/config.js"></script>
 </head>
 <body>
+  <!-- 헤더 -->
   <header class="header">
     <div class="container">
-      <nav class="navbar">
-        <a href="index.html" class="logo">인디코드<span>.</span></a>
-        <ul class="nav-links">
-          <li><a href="index.html" class="nav-link">홈</a></li>
-          <li><a href="write.html" class="nav-link active">글쓰기</a></li>
+      <a href="index.html" class="logo">Blog.</a>
+      <nav class="nav">
+        <ul>
+          <li><a href="index.html">글 목록</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
+  <!-- 메인 콘텐츠 -->
   <main class="main">
-    <section class="write-section">
-      <div class="container">
-        <!-- 비밀번호 인증 폼 -->
-        <div id="auth-form-container" class="auth-form-container">
-          <form id="auth-form" class="auth-form">
-            <div class="form-group">
-              <h2>관리자 인증</h2>
-              <p>글을 작성하려면 비밀번호를 입력하세요</p>
-              <input type="password" id="auth-password" name="password" placeholder="비밀번호를 입력하세요" required>
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="btn btn-primary">확인</button>
-            </div>
-          </form>
-        </div>
-
-        <!-- 글쓰기 폼 (비밀번호 인증 후 표시) -->
-        <div id="write-form-container" style="display: none;">
-          <form id="post-form" class="write-form">
-            <div class="form-group">
-              <label for="title">제목</label>
-              <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required>
-            </div>
-            <div class="form-group">
-              <label for="content">내용</label>
-              <textarea id="content" name="content"></textarea>
-            </div>
-            <div class="form-group">
-              <label for="description">요약 (선택사항)</label>
-              <textarea id="description" name="description" placeholder="글에 대한 간략한 설명을 입력하세요"></textarea>
-            </div>
-            <div class="form-group">
-              <label for="cover-image">커버 이미지 URL (선택사항)</label>
-              <input type="url" id="cover-image" name="cover_image" placeholder="이미지 URL을 입력하세요">
-            </div>
-            <div class="form-actions">
-              <button type="submit" id="submit-btn" class="btn btn-primary">게시하기</button>
-            </div>
-          </form>
-        </div>
+    <div class="container">
+      <!-- 인증 폼 -->
+      <div id="auth-form-container">
+        <h1 class="page-title">관리자 인증</h1>
+        <form id="auth-form" class="form auth-form">
+          <div class="form-group">
+            <label for="auth-password">비밀번호</label>
+            <input type="password" id="auth-password" name="password" required>
+          </div>
+          <button type="submit" class="btn btn-primary">인증하기</button>
+        </form>
       </div>
-    </section>
+
+      <!-- 글쓰기 폼 - 처음에는 숨김 -->
+      <div id="write-form-container" style="display: none;">
+        <h1 class="page-title">새 글 작성</h1>
+        <form id="post-form" class="form post-form">
+          <div class="form-group">
+            <label for="title">제목</label>
+            <input type="text" id="title" name="title" required>
+          </div>
+          <div class="form-group">
+            <label for="content">내용</label>
+            <textarea id="content" name="content" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="description">간단한 설명 (선택사항)</label>
+            <textarea id="description" name="description" rows="3" placeholder="글의 간단한 설명을 입력하세요. 입력하지 않으면 내용의 일부가 사용됩니다."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="cover-image">커버 이미지 URL (선택사항)</label>
+            <input type="url" id="cover-image" name="cover_image" placeholder="https://example.com/image.jpg">
+          </div>
+          <button type="submit" id="submit-btn" class="btn btn-primary">게시하기</button>
+        </form>
+      </div>
+    </div>
   </main>
 
+  <!-- 푸터 -->
   <footer class="footer">
     <div class="container">
-      <p>&copy; <script>document.write(new Date().getFullYear())</script> 인디코드. All rights reserved.</p>
+      <p>&copy; <span id="current-year"></span> Blog. All rights reserved.</p>
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.js"></script>
-  <script src="js/config.js"></script>
+  <!-- 현재 연도 표시 스크립트 -->
+  <script>
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+  </script>
+  
+  <!-- 메인 스크립트 -->
   <script src="js/write.js"></script>
 </body>
 </html> 
