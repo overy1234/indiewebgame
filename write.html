@@ -41,20 +41,8 @@
   <!-- 메인 콘텐츠 -->
   <main class="main">
     <div class="container">
-      <!-- 인증 폼 -->
-      <div id="auth-form-container">
-        <h1 class="page-title">관리자 인증</h1>
-        <form id="auth-form" class="form auth-form">
-          <div class="form-group">
-            <label for="auth-password">비밀번호</label>
-            <input type="password" id="auth-password" name="password" required>
-          </div>
-          <button type="submit" class="btn btn-primary">인증하기</button>
-        </form>
-      </div>
-
-      <!-- 글쓰기 폼 - 처음에는 숨김 -->
-      <div id="write-form-container" style="display: none;">
+      <!-- 글쓰기 폼 -->
+      <div id="write-form-container">
         <h1 class="page-title">새 글 작성</h1>
         <form id="post-form" class="form post-form">
           <div class="form-group">
@@ -63,7 +51,7 @@
           </div>
           <div class="form-group">
             <label for="content">내용</label>
-            <textarea id="content" name="content" class="editor-area" required style="display: inline-block;"></textarea>
+            <textarea id="content" class="editor-area" required style="display: block;"></textarea>
           </div>
           <div class="form-group">
             <label for="description">간단한 설명 (선택사항)</label>

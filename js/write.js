@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const authForm = document.getElementById('auth-form');
-  const authFormContainer = document.getElementById('auth-form-container');
   const writeFormContainer = document.getElementById('write-form-container');
   const postForm = document.getElementById('post-form');
   const submitBtn = document.getElementById('submit-btn');
@@ -10,46 +8,17 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // 요소 상태 확인 로그
   console.log('DOM이 로드되었습니다.');
-  console.log('인증 폼:', authForm);
   console.log('글쓰기 폼 컨테이너:', writeFormContainer);
   console.log('글쓰기 폼:', postForm);
   console.log('컨텐츠 영역:', contentArea);
   
-  // 인증 폼 제출 처리
-  authForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    console.log('인증 폼 제출됨');
-    
-    const password = document.getElementById('auth-password').value;
-    console.log('입력된 비밀번호:', password);
-    
-    try {
-      // Supabase에서 비밀번호 확인 (DB 연결이 안 되어 있어서 임시로 직접 비교)
-      // const isAuthenticated = await checkAdminPassword(password);
-      const isAuthenticated = password === '인디코드'; // 임시 인증 처리
-      
-      if (isAuthenticated) {
-        // 인증 성공
-        console.log('비밀번호 일치, 글쓰기 폼 표시');
-        authFormContainer.style.display = 'none';
-        writeFormContainer.style.display = 'block';
-        
-        // 지연 시간 증가 (100ms → 500ms)
-        setTimeout(() => {
-          initEditor();
-        }, 500);
-      } else {
-        // 인증 실패
-        console.log('비밀번호 불일치');
-        alert('비밀번호가 일치하지 않습니다.');
-        document.getElementById('auth-password').value = '';
-        document.getElementById('auth-password').focus();
-      }
-    } catch (error) {
-      console.error('인증 오류:', error);
-      alert('인증 중 오류가 발생했습니다. 다시 시도해주세요.');
-    }
-  });
+  // 글쓰기 폼 바로 표시
+  writeFormContainer.style.display = 'block';
+  
+  // 지연 시간 증가 (100ms → 500ms)
+  setTimeout(() => {
+    initEditor();
+  }, 500);
   
   // 마크다운 에디터 초기화 함수
   function initEditor() {
@@ -66,10 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('에디터 요소를 찾을 수 없습니다. 페이지를 새로고침하세요.');
       return;
     }
-    
-    // textarea에서 name 속성 임시 제거 (에디터 초기화 전에)
-    const originalName = contentAreaCheck.getAttribute('name');
-    contentAreaCheck.removeAttribute('name');
     
     // 포커스 제거 (에디터 초기화 전에)
     contentAreaCheck.blur();
@@ -107,17 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('에디터 초기화 완료:', easyMDE);
       console.log('에디터 DOM 확인:', document.querySelector('.EasyMDEContainer'));
       
-      // name 속성 복원 (필요한 경우)
-      if (originalName) {
-        setTimeout(() => {
-          const editorTextarea = document.querySelector('.EasyMDEContainer textarea');
-          if (editorTextarea) {
-            editorTextarea.setAttribute('name', originalName);
-            console.log('name 속성이 복원되었습니다:', originalName);
-          }
-        }, 100);
-      }
-      
       // 숨겨진 파일 업로드 입력 생성
       const fileInput = document.createElement('input');
       fileInput.type = 'file';
@@ -142,8 +96,18 @@ document.addEventListener('DOMContentLoaded', () => {
           cm.replaceRange(loadingText, cursor);
           
           try {
-            // 이미지 업로드 함수 호출
-            const imageUrl = await uploadImage(file);
+            // 이미지 업로드 함수 호출 (로컬 스토리지 모드에서는 로컬 URL 생성)
+            let imageUrl;
+            
+            // 로컬 환경에서는 파일 객체를 URL로 변환
+            if (!supabaseClient) {
+              // 브라우저 메모리에 파일 URL 생성 (페이지 새로고침 시 사라짐)
+              imageUrl = URL.createObjectURL(file);
+              console.log('로컬 이미지 URL 생성:', imageUrl);
+            } else {
+              // Supabase 스토리지 사용
+              imageUrl = await uploadImage(file);
+            }
             
             if (imageUrl) {
               // 업로드된 이미지로 텍스트 교체
